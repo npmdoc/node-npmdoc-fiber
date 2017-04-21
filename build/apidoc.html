@@ -1,0 +1,394 @@
+<div class="apidocDiv">
+<style>
+/*csslint
+*/
+.apidocDiv {
+    background: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.apidocDiv a[href] {
+    color: #33f;
+    font-weight: bold;
+    text-decoration: none;
+}
+.apidocDiv a[href]:hover {
+    text-decoration: underline;
+}
+.apidocCodeCommentSpan {
+    background: #bbf;
+    color: #000;
+    display: block;
+}
+.apidocCodeKeywordSpan {
+    color: #d00;
+    font-weight: bold;
+}
+.apidocCodePre {
+    background: #eef;
+    border: 1px solid;
+    color: #777;
+    padding: 5px;
+    white-space: pre-wrap;
+}
+.apidocFooterDiv {
+    margin-top: 20px;
+    text-align: center;
+}
+.apidocModuleLi {
+    margin-top: 10px;
+}
+.apidocSectionDiv {
+    border-top: 1px solid;
+    margin-top: 20px;
+}
+.apidocSignatureSpan {
+    color: #777;
+    font-weight: bold;
+}
+</style>
+<h1>api documentation for
+    <a
+
+        href="https://github.com/linkedin/Fiber"
+
+    >fiber (v1.0.4)</a>
+</h1>
+<h4>Lightweight JavaScript inheritance library</h4>
+<div class="apidocSectionDiv"><a
+    href="#apidoc.tableOfContents"
+    id="apidoc.tableOfContents"
+><h1>table of contents</h1></a><ol>
+
+    <li class="apidocModuleLi"><a href="#apidoc.module.fiber">module fiber</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.fiber.fiber">
+            function <span class="apidocSignatureSpan"></span>fiber
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.fiber.decorate">
+            function <span class="apidocSignatureSpan">fiber.</span>decorate
+            <span class="apidocSignatureSpan">( instance)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.fiber.extend">
+            function <span class="apidocSignatureSpan">fiber.</span>extend
+            <span class="apidocSignatureSpan">( fn )</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.fiber.mixin">
+            function <span class="apidocSignatureSpan">fiber.</span>mixin
+            <span class="apidocSignatureSpan">( definition)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.fiber.noConflict">
+            function <span class="apidocSignatureSpan">fiber.</span>noConflict
+            <span class="apidocSignatureSpan">()</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.fiber.proxy">
+            function <span class="apidocSignatureSpan">fiber.</span>proxy
+            <span class="apidocSignatureSpan">( base, instance )</span>
+            </a>
+
+        </li>
+
+    </ol></li>
+
+</ol></div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.fiber" id="apidoc.module.fiber">module fiber</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.fiber.fiber" id="apidoc.element.fiber.fiber">
+        function <span class="apidocSignatureSpan"></span>fiber
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function Fiber(){}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.fiber.decorate" id="apidoc.element.fiber.decorate">
+        function <span class="apidocSignatureSpan">fiber.</span>decorate
+        <span class="apidocSignatureSpan">( instance)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">decorate = function ( instance) {
+  var i,
+    // Get the base prototype.
+    base = instance.constructor.__base__,
+    // Get all the decorators in the arguments.
+    decorators = ArrayProto.slice.call( arguments, 1 ),
+    len = decorators.length;
+
+  for( i = 0; i &#x3c; len; i++ ){
+    copy( decorators[i].call( instance, base ), instance );
+  }
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+## Decorators
+
+With decorators you can dynamically attach additional properties to an instance.  [Read more.](http://en.wikipedia.org/wiki/Decorator_pattern
+)
+
+### Usage
+
+`Fiber.<span class="apidocCodeKeywordSpan">decorate</span>( instance, decorator_1, ... , decorator_n )`
+
+```javascript
+function CarWithPowerWindows(base) {
+    return {
+        roll: function() {}
+    }
+}
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.fiber.extend" id="apidoc.element.fiber.extend">
+        function <span class="apidocSignatureSpan">fiber.</span>extend
+        <span class="apidocSignatureSpan">( fn )</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">extend = function ( fn ) {
+  // Keep a reference to the current prototye.
+  var parent = this.prototype,
+
+  // Invoke the function which will return an object literal used to define
+  // the prototype. Additionally, pass in the parent prototype, which will
+  // allow instances to use it.
+    properties = fn( parent ),
+
+  // Stores the constructor&#x27;s prototype.
+    proto;
+
+  // The constructor function for a subclass.
+  function child(){
+    if( !initializing ){
+      // Custom initialization is done in the `init` method.
+      this.init.apply( this, arguments );
+      // Prevent susbsequent calls to `init`.
+      // Note: although a `delete this.init` would remove the `init` function from the instance,
+      // it would still exist in its super class&#x27; prototype.  Therefore, explicitly set
+      // `init` to `void 0` to obtain the `undefined` primitive value (in case the global&#x27;s `undefined`
+      // property has been re-assigned).
+      this.init = void 0;
+    }
+  }
+
+  // Instantiate a base class (but only create the instance, without running `init`).
+  // and make every `constructor` instance an instance of `this` and of `constructor`.
+  initializing = true;
+  proto = child.prototype = new this;
+  initializing = false;
+
+  // Add default `init` function, which a class may override; it should call the
+  // super class&#x27; `init` function (if it exists);
+  proto.init = function(){
+    if ( typeof parent.init === &#x27;function&#x27; ) {
+      parent.init.apply( this, arguments );
+    }
+  };
+
+   // Copy the properties over onto the new prototype.
+  copy( properties, proto );
+
+  // Enforce the constructor to be what we expect.
+  proto.constructor = child;
+
+  // Keep a reference to the parent prototype.
+  // (Note: currently used by decorators and mixins, so that the parent can be inferred).
+  child.__base__ = parent;
+
+   // Make this class extendable.
+  child.extend = Fiber.extend;
+
+  return child;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+Take a look at the [performance tests](http://jsperf.com/js-inheritance-performance) to see how it compares against commonly used
+ inheritance libraries.
+
+## Inheritance
+
+### Usage
+
+`[[constructor]].<span class="apidocCodeKeywordSpan">extend</span>( function )`
+
+#### Example
+
+```javascript
+// Animal base class
+var Animal = Fiber.extend(function() {
+return {
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.fiber.mixin" id="apidoc.element.fiber.mixin">
+        function <span class="apidocSignatureSpan">fiber.</span>mixin
+        <span class="apidocSignatureSpan">( definition)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">mixin = function ( definition) {
+  var i,
+    // Get the base prototype.
+    base = definition.__base__,
+    // Get all the mixins in the arguments.
+    mixins = ArrayProto.slice.call( arguments, 1 ),
+    len = mixins.length;
+
+  for( i = 0; i &#x3c; len; i++ ){
+    copy( mixins[i]( base ), definition.prototype );
+  }
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+## Mixin
+
+Mixins are a way to add functionality to a Fiber definition.  Basically, they address the problem of &#x22;multiple inheritance&#
+x22;.  [Read more.](http://www.joezimjs.com/javascript/javascript-mixins-functional-inheritance/)
+
+### Usage
+
+`Fiber.<span class="apidocCodeKeywordSpan">mixin</span>( object, function1, function2, ... )`
+
+```javascript
+var Foo = Fiber.extend(function(base) {
+    return {
+        method1: function(){}
+    }
+});
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.fiber.noConflict" id="apidoc.element.fiber.noConflict">
+        function <span class="apidocSignatureSpan">fiber.</span>noConflict
+        <span class="apidocSignatureSpan">()</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">noConflict = function () {
+  global.Fiber = previousFiber;
+  return Fiber;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+});
+```
+
+## noConflict
+
+### Usage
+
+`Fiber.<span class="apidocCodeKeywordSpan">noConflict</span>()`
+
+Returns a reference to the Fiber object, and sets the `Fiber` variable to its previous owner.
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.fiber.proxy" id="apidoc.element.fiber.proxy">
+        function <span class="apidocSignatureSpan">fiber.</span>proxy
+        <span class="apidocSignatureSpan">( base, instance )</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">proxy = function ( base, instance ) {
+  var name,
+    iface = {},
+    wrap;
+
+  // If there&#x27;s only 1 argument specified, then it is the instance,
+  // thus infer `base` from its constructor.
+  if ( arguments.length === 1 ) {
+    instance = base;
+    base = instance.constructor.__base__;
+  }
+
+  // Returns a function which calls another function with `instance` as
+  // the context.
+  wrap = function( fn ) {
+    return function() {
+      return base[fn].apply( instance, arguments );
+    };
+  };
+
+  // For each function in `base`, create a wrapped version.
+  for( name in base ){
+    if( base.hasOwnProperty( name ) &#x26;&#x26; typeof base[name] === &#x27;function&#x27; ){
+      iface[name] = wrap( name );
+    }
+  }
+  return iface;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+Fiber.decorate(myCar, CarWithPowerWindows);
+```
+
+## Proxy
+
+### Usage
+
+`Fiber.<span class="apidocCodeKeywordSpan">proxy</span>( base, instance )`
+
+```javascript
+// Extend the Animal class;
+var Dog = Animal.extend(function(base) {
+return {
+    init: function() {
+        this.base = Fiber.proxy(base, this);
+...</pre></li>
+    </ul>
+
+
+</div>
+
+<div class="apidocFooterDiv">
+    [ this document was created with
+    <a href="https://github.com/kaizhu256/node-utility2" target="_blank">utility2</a>
+    ]
+</div>
+</div>
